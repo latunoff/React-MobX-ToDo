@@ -5,7 +5,7 @@ import { types, getSnapshot } from "mobx-state-tree";
 import { observer } from "mobx-react";
 import { observable, computed } from "mobx"
 
-import TodosView from "./components/TodoView"
+import TodosView from "./components/todo-view"
 
 // @observer
 class App extends React.Component
