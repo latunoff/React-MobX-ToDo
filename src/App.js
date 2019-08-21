@@ -1,97 +1,65 @@
-import React from 'react';
-import './App.css';
+import React, { useState } from 'react';
+import './app.css';
 
-import { types, getSnapshot } from "mobx-state-tree";
 import { observer } from "mobx-react";
-import { observable, computed } from "mobx"
 
-import TodosView from "./components/todo-view"
+import TodosPage from "./pages/todos"
+import StateHook from "./hooks/state-hook"
+import ReducerCounter from "./hooks/use-reducer"
+import Context from "./store"
+import Store from "./store/todos"
+// let store = {items: [{id: 3, name: 'test'}],onAddClick: addClickTodoo}
 
-// @observer
-class App extends React.Component
-{
-  constructor(props) {
-    super(props);
-    this.state = { todos: [{ id: 1, name: "Start" }] };
-    this.textInput = '';
+
+console.log(Store)
+
+export default function App() {
+  const [statement, setStatement] = useState(Store);
+  const addClickTodo = () => {
+    Store.addTodo('this', this);
+    // store.items.push({id: 4, name: '444'});
+    setStatement(Store);
+    // setStatement(Object.assign({}, Store));
+
+    // количество items при клике увеличивается, но не на экране
+    console.log(Store.items);
   }
+  statement.onAddClick = addClickTodo;
 
-  handlerAddTodo(e) {
-    e.preventDefault();
-    if (this.textInput.value === '') return;
-    // console.log(this.state.todos.slice(-1)[0].id);
-    this.state.todos.push({ id: this.state.todos.slice(-1)[0].id+1, name: this.textInput.value });
-    // this.setState(this.state);
-
-    // add by mobx way
-    this.things.addTodo(this.textInput.value);
-  }
-
-  handlerDelTodo(id) {
-    this.things.deleteTodo(id);
-  }
-
-  render() {
-
-    const Todo = types
-      .model({
-        id: types.number,
-        name: types.string,
-        done: false
-      })
-
-    const thing = Todo
-      .create({
-        id: 1,
-        name: "mobxStart",
-      });
-
-    const Todos = types
-      .model({
-        items: types.array(Todo)
-      })
-      .views(self => ({
-        get showTodos() {
-          return self.items;
-        }
-      }))
-      .actions(self => ({
-        addTodo(name) {
-          self.items.push({
-            id: self.items.length > 0 ? self.items.slice(-1)[0].id+1 : 1,
-            name
-          })
-        },
-        deleteTodo(id) {
-          self.items = self.items.filter((e) => e.id !== id);
-        }
-      }))
-    const things = this.things = Todos
-      .create({
-        items: [thing]
-      });
+  // по идее при setTimeout должен добавлять todo2 в список, но нет...
+  setTimeout(()=>{ 
+    Store.addTodo('todo2')
+    // setStatement(Object.assign({}, Store));  // в этом случае добавление происходит, но криво
+    setStatement(Store);
+    console.log(Store.items);
+  }, 1000)
 
 
-    const todos = this.state.todos;
-
-    return (
-      <div className="App">
-        <header className="App-header">
-          <form onSubmit={this.handlerAddTodo.bind(this)}>
-            <input name="todoname" ref={(input) => this.textInput = input} />
-            <button>Add</button>
-          </form>
-          <div>
-          <p>Mobx:</p>
-          <TodosView list={things} />
+  return (
+    <div className="App">
+      <header className="App-header">
+        <div>
+          <Context.Provider value={statement}>
+            <TodosPage />
+          </Context.Provider>
           <hr />
-          {/* <p>State:</p>{todos.map(e => (<p key={e.id}>{e.id}. {e.name}</p>))} */}
-          </div>
-        </header>
-      </div>
-    );
-  }
+          <StateHook />
+          <ReducerCounter />
+        </div>
+      </header>
+    </div>
+  );
 }
 
+function addClickTodoo(e, todo) {
+  console.log(e, todo, this);
+  e.preventDefault();
 
-export default App;
+  Store.addTodo('this');
+
+  console.log(Store.items);
+}
+
+function onDelClick(id) {
+  // this.things.deleteTodo(id);
+}

@@ -10,4 +10,3 @@ const TodosView = (list) => (
 )
 
 export default observer(TodosView);
-{/* <span style={{color: 'red', cursor: 'pointer'}} onClick={this.handlerDelTodo.bind(this, e.id)}>X</span> */}
