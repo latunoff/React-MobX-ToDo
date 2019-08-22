@@ -1,6 +1,6 @@
 import React from 'react';
 
-import things from "./store/todos"
+import things from "./todos"
 
 const Context = React.createContext(things);
 

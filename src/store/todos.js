@@ -1,4 +1,6 @@
 import { types } from "mobx-state-tree";
+import { useObservable, useLocalStore } from "mobx-react-lite";
+import { observable } from "mobx"
 
 const Todo = types
   .model({
@@ -24,25 +26,20 @@ const Todos = types
   }))
   .actions(self => ({
     addTodo(name) {
-        console.log('addTodo', name);
-      self.items.push({
-        id: 5,//Date.now(),
-        name
-      })
+      if (name > '') {
+        // console.log('addTodo', name);
+        self.items.push({
+          id: Date.now(),
+          name
+        })
+      }
     },
     deleteTodo(id) {
       self.items = self.items.filter((e) => e.id !== id);
     }
   }))
-let things = Todos
-  .create({
-    items: [thing],
-    // onAddClick: addTodoClick
-});
 
-function addTodoClick(todo) {
-    console.log('ok');
-    // things.addTodo(todo)
-}
+// const Store = ()=>useObservable(Todos.create({items: [thing]}))
+const Store = Todos.create({items: [thing]})
 
-export default things
+export default Store
