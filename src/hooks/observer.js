@@ -1,16 +1,17 @@
 import React from 'react'
-import { observer, useObservable, useObserver } from "mobx-react-lite"
+import { useObservable, useObserver } from "mobx-react-lite"
 
-const TodoList = () => {
-    const todos = useObservable(new Map<string, boolean>())
+const TodoListObservable = () => {
+    const todos = useObservable(new Map())
     const todoRef = React.useRef()
     const addTodo = React.useCallback(() => {
         todos.set(todoRef.current.value, false)
         todoRef.current.value = ""
-    }, [])
-    const toggleTodo = React.useCallback((todo: string) => {
+    }, [todos])
+
+    const toggleTodo = React.useCallback((todo) => {
         todos.set(todo, !todos.get(todo))
-    }, [])
+    }, [todos])
 
     return useObserver(() => (
         <div>
@@ -25,3 +26,5 @@ const TodoList = () => {
         </div>
     ))
 }
+
+export default TodoListObservable

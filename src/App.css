@@ -31,3 +31,15 @@
     transform: rotate(360deg);
   }
 }
+
+.App .App-header .done {
+  color: grey
+}
+
+.App .App-header .button {
+  cursor: pointer;
+}
+
+.App .App-header .red {
+  color: red;
+}

@@ -1,11 +1,8 @@
-import { types, getSnapshot } from "mobx-state-tree";
+import { types } from "mobx-state-tree";
 
-const item = {
-    id: 1,
-    name: "Name"
-}
-
-export const TodoItem = types.model({
+export const TodoItem = types
+.model({
     id: types.number,
-    name: types.string
+    name: types.string,
+    done: types.boolean
 })

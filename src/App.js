@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './app.css';
 
 import TodosPage from "./router"
 import StateHook from "./hooks/state-hook"
 import ReducerCounter from "./hooks/use-reducer"
-import Context from "./store"
-import Store from "./store/todos"
+import TodoListObservable from "./hooks/observer"
+import Context from "./contexts/store-context"
+import Store from "./store"
 
 
 export default function App() {
@@ -17,10 +18,12 @@ export default function App() {
             <TodosPage />
           </Context.Provider>
           <hr />
+          <TodoListObservable />
+          <hr />
           <StateHook />
           <ReducerCounter />
         </div>
       </header>
     </div>
-  );
+  )
 }

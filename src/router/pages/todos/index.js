@@ -1,42 +1,45 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { observer, useObserver } from "mobx-react-lite";
+import React, { useCallback, useContext } from 'react';
+import { observer } from "mobx-react-lite";
 
-import Context from "../../../store"
-import Store from "../../../store"
+import Context from "../../../contexts/store-context"
 
-TodosPage.propTypes = {
-    todos: PropTypes.array,
-    textInput: PropTypes.string
-}
 
 function TodosPage()
 {
-  const [text, setText] = React.useState('test');
-  //useObserver(() => 
+  const todoRef = React.useRef()
+
+  const store = useContext(Context)
+
+  const onAddClick = useCallback(() => {
+    store.addTodo(todoRef.current.value)
+    todoRef.current.value = ''
+  }, [store])
+
+  const onTodoToggle = useCallback((id) => {
+    store.toggleTodo(id)
+  }, [store])
+
+  const onTodoDelete = useCallback((id) => {
+    store.deleteTodo(id)
+  }, [store])
+
   return ( 
     <div className="App">
-      <Context.Consumer>
-      {({ items, addTodo, showTodos }) => (
         <header className="App-header">
-
-            <input name="todoname" value={text} onChange={e => setText(e.target.value)} />
-            <button onClick={() => {
-              addTodo(text)
-              setText('')
-            }}>Add</button>
-
+            <input name="todoname" ref={todoRef} />
+            <button onClick={onAddClick}>Add</button>
           <div>
             <p>Todos:</p>
             <div>
-                {showTodos && showTodos.map(e => (
-                  <p key={e.id}>{e.id}. {e.name}  </p>
+                {store && store.items.map(e => (
+                  <p key={e.id} className={e.done ? 'done' : ''}>{e.id}. {e.name} 
+                    <input type="checkbox" checked={e.done} onChange={() => onTodoToggle(e.id)} />
+                    <button className="button red" onClick={() => onTodoDelete(e.id)}>X</button>
+                  </p>
                 ))}
             </div>
           </div>
         </header>
-      )}
-      </Context.Consumer>
     </div>
   )
 }

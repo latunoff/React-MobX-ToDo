@@ -1,7 +1,6 @@
-import React from 'react';
+import TodoList from "../models/todo-list"
 
-import things from "./todos"
 
-const Context = React.createContext(things);
+export const Store = TodoList.create({items: []})
 
-export default Context
+export default Store
