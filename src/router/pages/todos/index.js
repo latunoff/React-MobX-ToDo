@@ -25,10 +25,10 @@ function TodosPage()
         <Input name="todoname" ref={todoRef} />
         <Button onClick={onAddClick}>Add</Button>
         <div>
-          <p>Todos:</p>-{store.isValidRef()}-
+          <p>Todos:</p>
           <p>Fixed todo: {store.isValidRef() &&
-            <Caption done={store.items[store.fixedItem.id-1].done}>
-              {store.items[store.fixedItem.id-1].id}. {store.items[store.fixedItem.id-1].name}
+            <Caption done={store.fixedItem.done}>
+              {store.fixedItem.id}. {store.fixedItem.name}
             </Caption>}
           </p>
           {store.loading && <div>Loading...</div>}

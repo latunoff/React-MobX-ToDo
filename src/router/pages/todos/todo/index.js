@@ -7,6 +7,8 @@ import StyledTodo, { Button, Input } from "./styles"
 
 function Todo({todo}) {
   const store = useContext(Context)
+
+  const { id } = todo
   
   const onTodoToggle = useCallback((id) => {
     store.toggleTodo(id)
@@ -26,7 +28,7 @@ function Todo({todo}) {
 
   return (
       <StyledTodo key={todo.id} done={todo.done}>
-        {todo.id}. {todo.name} 
+        {todo.id}. {todo.name}
         <Input type="checkbox" checked={todo.done} onChange={onToggle} />
         <Button delete onClick={onDelete}>X</Button>
         <Button  onClick={onFix}>V</Button>
