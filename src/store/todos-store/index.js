@@ -1,21 +1,18 @@
-import { types, flow } from "mobx-state-tree";
+import { types, flow, isValidReference } from "mobx-state-tree";
 
-import { TodoItem } from "./todo";
+import TodoItem from "./todo";
 
 
-export const TodoList = types
+const TodoList = types
 .model({
   items: types.optional(types.array(TodoItem), []),
-  loading: types.optional(types.boolean, false),
-  loaded: types.optional(types.boolean, false),
+  loading: false,
+  loaded: false,
   fixedItem: types.maybe(types.reference(types.late(() => TodoItem)))
 })
 .views(self => ({
     get showTodos() {
       return self.items
-    },
-    get getFixed() {
-      return self.fixedItem
     }
 }))
 .actions(self => ({
@@ -24,12 +21,12 @@ export const TodoList = types
     try {
       const response = yield fetch('https://world.openfoodfacts.org/api/v0/product/737628064502.json')
       const data = yield response.json()
-      data.product.ingredients.forEach((e, idx) => {
-        self.items.push({
-          id: idx+1+'',//Math.floor(Math.random()*10)+'',
+      self.items = data.product.ingredients.map((e, idx) => {
+        return {
+          id: idx+1+'',
           name: e.text,
           done: false
-        })
+        }
       })
       self.loading = false
       self.loaded = true
@@ -40,6 +37,10 @@ export const TodoList = types
   }),
   fixItem(id) {
     self.fixedItem = id
+    self.loading = true; self.loading = false   // без этого переключения ф-я isValidRef() в шаблоне не возвращает true после выставления fixedItem
+  },
+  isValidRef() {
+    return isValidReference(() => self.fixedItem)
   },
   getFixedItem() {
     return self.fixedItem

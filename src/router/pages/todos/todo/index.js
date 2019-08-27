@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react'
 import { observer } from "mobx-react-lite";
 
 import Context from "../../../../contexts/store-context"
-import StyledTodo from "./styles"
+import StyledTodo, { Button, Input } from "./styles"
 
 
 function Todo({todo}) {
@@ -20,14 +20,17 @@ function Todo({todo}) {
     store.fixItem(id)
   }, [store])
 
+  const onDelete = () => onTodoDelete(todo.id)
+  const onFix = () => onFixClick(todo.id)
+  const onToggle = () => onTodoToggle(todo.id)
+
   return (
-    <StyledTodo>
-      <li key={todo.id} className={todo.done ? 'done' : ''}>{todo.id}. {todo.name} 
-        <input type="checkbox" checked={todo.done} onChange={() => onTodoToggle(todo.id)} />
-        <button className="button red" onClick={() => onTodoDelete(todo.id)}>X</button>
-        <button className="button" onClick={() => onFixClick(todo.id)}>V</button>
-      </li>
-    </StyledTodo>
+      <StyledTodo key={todo.id} done={todo.done}>
+        {todo.id}. {todo.name} 
+        <Input type="checkbox" checked={todo.done} onChange={onToggle} />
+        <Button delete onClick={onDelete}>X</Button>
+        <Button  onClick={onFix}>V</Button>
+      </StyledTodo>
   )
 }
 

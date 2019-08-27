@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 
 import Context from "../../../contexts/store-context"
 import Todo from "./todo"
-import StyledHeader from "./styles"
+import Header, { Input, Button, Caption } from "./styles"
 
 
 function TodosPage()
@@ -21,26 +21,24 @@ function TodosPage()
   }, [store])
   
   return ( 
-    <div className="app">
-      <StyledHeader>
-        <header className="app-header">
-          <input name="todoname" ref={todoRef} />
-          <button onClick={onAddClick}>Add</button>
-          <div>
-            <p>Todos:</p>
-            <p>Fixed todo: {store && store.items.length > 0 && store.fixedItem.id > '' &&
-              <span className={store.items[store.fixedItem.id-1].done ? 'done' : ''}>{store.items[store.fixedItem.id-1].id}. {store.items[store.fixedItem.id-1].name}</span>}
-            </p>
-            {store.loading && <div>Loading...</div>}
-            <ul>
-              {store && store.items.filter(e => e.id !== store.fixedItem.id).map(e => (
-                <Todo todo={e} key={e.id} />
-              ))}
-            </ul>
-          </div>
-        </header>
-      </StyledHeader>
-    </div>
+      <Header>
+        <Input name="todoname" ref={todoRef} />
+        <Button onClick={onAddClick}>Add</Button>
+        <div>
+          <p>Todos:</p>-{store.isValidRef()}-
+          <p>Fixed todo: {store.isValidRef() &&
+            <Caption done={store.items[store.fixedItem.id-1].done}>
+              {store.items[store.fixedItem.id-1].id}. {store.items[store.fixedItem.id-1].name}
+            </Caption>}
+          </p>
+          {store.loading && <div>Loading...</div>}
+          <ul>
+            {store.items.filter(e => (!store.isValidRef() || e.id !== store.fixedItem.id)).map(e => (
+              <Todo todo={e} key={e.id} />
+            ))}
+          </ul>
+        </div>
+      </Header>
   )
 }
 
