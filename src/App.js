@@ -1,5 +1,4 @@
 import React from 'react';
-import './app.css';
 
 import TodosPage from "./router"
 import StateHook from "./hooks/state-hook"
