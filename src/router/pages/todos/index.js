@@ -3,8 +3,9 @@ import { observer } from "mobx-react-lite";
 
 import Context from "../../../contexts/store-context"
 import Todo from "./todo"
-import Header, { Input, Button, Caption } from "./styles"
-
+import Header, { Caption } from "./styles"
+import { GreenButton } from '../../../styled/button';
+import { SInput } from '../../../styled/input';
 
 function TodosPage()
 {
@@ -22,8 +23,8 @@ function TodosPage()
   
   return ( 
       <Header>
-        <Input name="todoname" ref={todoRef} />
-        <Button onClick={onAddClick}>Add</Button>
+        <SInput name="todoname" ref={todoRef} placeholder="New Todo name" />
+        <GreenButton onClick={onAddClick}>Add</GreenButton>
         <div>
           <p>Todos:</p>
           <p>Fixed todo: {store.isValidRef() &&

@@ -3,12 +3,15 @@ import { observer } from "mobx-react-lite";
 
 import Context from "../../../../contexts/store-context"
 import StyledTodo, { Button, Input } from "./styles"
-
+// import { SCheckbox } from '../../../../styled/checkbox';
+import { Checkbox } from '@mui/material';
+import { RedButton } from '../../../../styled/button';
+import { GreenButton } from '../../../../styled/button';
 
 function Todo({todo}) {
   const store = useContext(Context)
 
-  const { id } = todo
+  // const { id } = todo
   
   const onTodoToggle = useCallback((id) => {
     store.toggleTodo(id)
@@ -29,9 +32,12 @@ function Todo({todo}) {
   return (
       <StyledTodo key={todo.id} done={todo.done}>
         {todo.id}. {todo.name}
-        <Input type="checkbox" checked={todo.done} onChange={onToggle} />
-        <Button delete onClick={onDelete}>X</Button>
-        <Button  onClick={onFix}>V</Button>
+        <Checkbox onChange={onToggle} />
+        {/* <Input type="checkbox" checked={todo.done} onChange={onToggle} /> */}
+        {/* <Button delete onClick={onDelete}>X</Button>
+        <Button onClick={onFix}>V</Button> */}
+        <RedButton onClick={onDelete}> X </RedButton>
+        <GreenButton onClick={onFix}> V </GreenButton>
       </StyledTodo>
   )
 }

@@ -14,12 +14,17 @@ const Header = styled.div`
 
 export default Header
 
-export const Input = styled.input``
+export const Input = styled.input`
+  padding: 10px;
+  border-radius: 8px;
+`
 
 export const Button = styled.button`
-  cursor: pointer
+  cursor: pointer;
+  padding: 10px 30px;
+  border-radius: 5px;
 `
 
 export const Caption = styled.span`
-  color: ${props => props.done ? 'grey' : 'white'}
+  color: ${props => props.done ? 'grey' : 'white'};
 `
